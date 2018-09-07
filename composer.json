@@ -1,0 +1,29 @@
+{
+    "name": "januar/laravel-outside",
+    "description": "Using laravel command (migration command available now) outside laravel framework",
+    "type": "library",
+    "require": {
+        "illuminate/database": "5.6.*",
+        "illuminate/console": "5.6.*",
+        "illuminate/events": "5.6.*",
+        "illuminate/filesystem": "5.6.*",
+        "symfony/var-dumper": "~4.0",
+        "illuminate/config": "5.6.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Januar Sirait",
+            "email": "januar.srt@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Januar\\LaravelOutside\\": "src/"
+        }
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0@dev"
+    }
+}
