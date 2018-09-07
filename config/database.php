@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'default' => 'mysql',
+    'default' => env('DB_DEFAULT','mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,34 +54,34 @@ return [
 
         'mysql' => [
             'driver'    => 'mysql',
-            'host'      => 'localhost',
-            'database'  => 'laravel-migration',
-            'username'  => 'root',
-            'password'  => '',
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
+            'host'      => env('DB_HOST','localhost'),
+            'database'  => env('DB_DATABASE'),
+            'username'  => env('DB_USERNAME'),
+            'password'  => env('DB_PASSWORD'),
+            'charset'   => env('DB_CHARSET','utf8'),
+            'collation' => env('DB_COLLATION','utf8_unicode_ci'),
+            'prefix'    => env('DB_PREFIX',''),
+            'strict'    => env('DB_STRICT', false),
         ],
 
         'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => 'localhost',
-            'database' => 'forge',
-            'username' => 'forge',
-            'password' => '',
-            'charset'  => 'utf8',
-            'prefix'   => '',
+            'host'     => env('DB_HOST','localhost'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'charset'  => env('DB_CHARSET','utf8'),
+            'prefix'   => env('DB_PREFIX',''),
             'schema'   => 'public',
         ],
 
         'sqlsrv' => [
             'driver'   => 'sqlsrv',
-            'host'     => 'localhost',
-            'database' => 'forge',
-            'username' => 'forge',
-            'password' => '',
-            'prefix'   => '',
+            'host'     => env('DB_HOST','localhost'),
+            'database' => env('DB_DATABASE'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'prefix'   => env('DB_PREFIX',''),
         ],
 
     ],

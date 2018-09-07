@@ -3,14 +3,16 @@
 
 $autoload_paths = array(
     __DIR__.'/../vendor/autoload.php',
-    __DIR__.'/../../../autoload.php',
+    __DIR__.'/../../vendor/autoload.php',
 );
 
 $found = false;
+$basePath = __DIR__;
 foreach ($autoload_paths as $path) {
     if (file_exists($path)) {
         require $path;
         $found = true;
+        $basePath = realpath(str_replace('vendor/autoload.php', "", $path));
         break;
     }
 }
@@ -22,7 +24,7 @@ if (!$found) {
     );
 }
 
-$kernel = new \Januar\LaravelOutside\Kernel();
+$kernel = new \Januar\LaravelOutside\Kernel($basePath);
 $kernel->handle($input = new Symfony\Component\Console\Input\ArgvInput,
     new Symfony\Component\Console\Output\ConsoleOutput);
 

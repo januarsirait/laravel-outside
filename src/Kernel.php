@@ -9,14 +9,14 @@
 namespace Januar\LaravelOutside;
 
 use Illuminate\Config\Repository;
-use Illuminate\Database\DatabaseServiceProvider;
-use Illuminate\Database\MigrationServiceProvider;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Facade;
 use Januar\LaravelOutside\Console\Application as Js;
 use Januar\LaravelOutside\Exception\AppException;
 use Januar\LaravelOutside\Exception\ConfigNotExistsException;
 use Januar\LaravelOutside\Provider\ConsoleServiceProvider;
+use Symfony\Component\Dotenv\Dotenv;
 
 
 class Kernel
@@ -59,7 +59,7 @@ class Kernel
     public function handle($input, $output = null){
         try {
             $this->loadConfig();
-            $this->initApp();
+            $this->bootstrap();
             return $this->getJs()->run($input, $output);
         }catch (\Exception $e){
             if (is_subclass_of($e, AppException::class)){
@@ -87,6 +87,12 @@ class Kernel
     }
 
     protected function loadConfig(){
+        if (file_exists($this->basePath . '/.env')){
+            (new Dotenv())->load($this->basePath . '/.env');
+        }else{
+            throw (new ConfigNotExistsException($this->basePath . '/.env'));
+        }
+
         $config = realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR . 'config/config.php';
         if (file_exists($config)){
             $this->config = require $config;
@@ -97,7 +103,7 @@ class Kernel
 
     protected function initApp(){
         if (interface_exists('Illuminate\Contracts\Foundation\Application')) {
-            $this->app = new Application();
+            $this->app = new Application($this->basePath);
             $this->app['config'] = $this->config;
             $this->app['path.database'] = $this->config['database']['path'];
         }else{
@@ -123,14 +129,19 @@ class Kernel
 
             return $composer;
         });
+    }
 
-        $databaseServiceProvider = new DatabaseServiceProvider($this->app);
-        $databaseServiceProvider->register();
+    public function bootstrap(){
+        $this->initApp();
+        Facade::setFacadeApplication($this->app);
+        $this->app->setDeferredServices([
+                'database' => '\Illuminate\Database\DatabaseServiceProvider',
+                'migration' => '\Illuminate\Database\MigrationServiceProvider'
+            ]
+        );
 
-        $migrationServiceProvider = new MigrationServiceProvider($this->app);
-        $migrationServiceProvider->register();
-
+        $this->app->boot();
+        $this->app->loadDeferredProviders();
         $this->app->register(new ConsoleServiceProvider($this->app));
-
     }
 }

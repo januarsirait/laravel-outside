@@ -22,6 +22,13 @@ class Application extends Container implements LaravelApplication
     const VERSION = '1.0.0';
 
     /**
+     * The base path for the Laravel installation.
+     *
+     * @var string
+     */
+    protected $basePath;
+
+    /**
      * Indicates if the application has been bootstrapped before.
      *
      * @var bool
@@ -50,10 +57,20 @@ class Application extends Container implements LaravelApplication
     protected $loadedProviders = [];
 
     /**
+     * The deferred services and their providers.
+     *
+     * @var array
+     */
+    protected $deferredServices = [];
+
+    /**
      * @var array $config
     */
-    public function __construct()
+    public function __construct($basePath)
     {
+        if ($basePath){
+            $this->setBasePath($basePath);
+        }
     }
 
     /**
@@ -73,7 +90,20 @@ class Application extends Container implements LaravelApplication
      */
     public function basePath()
     {
-        // TODO: Implement basePath() method.
+        return $this->basePath;
+    }
+
+    /**
+     * Set the base path for the application.
+     *
+     * @param  string  $basePath
+     * @return $this
+     */
+    public function setBasePath($basePath)
+    {
+        $this->basePath = rtrim($basePath, '\/');
+
+        return $this;
     }
 
     /**
@@ -135,6 +165,21 @@ class Application extends Container implements LaravelApplication
     }
 
     /**
+     * @param  array|string $services
+     * @param  boolean $clear
+    */
+    public function setDeferredServices($services, $clear = false){
+        if ($clear)
+            $this->deferredServices = [];
+
+        if (is_array($services)){
+            $this->deferredServices = array_merge($this->deferredServices, $services);
+        }else{
+            $this->deferredServices[] = $services;
+        }
+    }
+
+    /**
      * Register a service provider with the application.
      *
      * @param  \Illuminate\Support\ServiceProvider|string $provider
@@ -187,6 +232,45 @@ class Application extends Container implements LaravelApplication
     }
 
     /**
+     * Load and boot all of the remaining deferred providers.
+     *
+     * @return void
+     */
+    public function loadDeferredProviders()
+    {
+        // We will simply spin through each of the deferred providers and register each
+        // one and boot them if the application has booted. This should make each of
+        // the remaining services available to this application for immediate use.
+        foreach ($this->deferredServices as $service => $provider) {
+            $this->loadDeferredProvider($service);
+        }
+
+        $this->deferredServices = [];
+    }
+
+    /**
+     * Load the provider for a deferred service.
+     *
+     * @param  string  $service
+     * @return void
+     */
+    public function loadDeferredProvider($service)
+    {
+        if (! isset($this->deferredServices[$service])) {
+            return;
+        }
+
+        $provider = $this->deferredServices[$service];
+
+        // If the service provider has not already been loaded and registered we can
+        // register it with the application and remove the service from this list
+        // of deferred services, since it will already be loaded on subsequent.
+        if (! isset($this->loadedProviders[$provider])) {
+            $this->registerDeferredProvider($provider, $service);
+        }
+    }
+
+    /**
      * Register a deferred provider and service.
      *
      * @param  string $provider
@@ -195,7 +279,17 @@ class Application extends Container implements LaravelApplication
      */
     public function registerDeferredProvider($provider, $service = null)
     {
-        // TODO: Implement registerDeferredProvider() method.
+        if ($service) {
+            unset($this->deferredServices[$service]);
+        }
+
+        $this->register($instance = new $provider($this));
+
+        if (! $this->booted) {
+            $this->booting(function () use ($instance) {
+                $this->bootProvider($instance);
+            });
+        }
     }
 
     /**
@@ -205,7 +299,7 @@ class Application extends Container implements LaravelApplication
      */
     public function boot()
     {
-        // TODO: Implement boot() method.
+        $this->booted = true;
     }
 
     /**
