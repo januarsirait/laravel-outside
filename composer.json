@@ -18,7 +18,8 @@
         "illuminate/filesystem": "5.6.*",
         "symfony/var-dumper": "~4.0",
         "illuminate/config": "5.6.*",
-        "symfony/dotenv": "~4.1"
+        "symfony/dotenv": "~4.1",
+        "mockery/mockery": "^1.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -29,9 +30,6 @@
         "files": [
             "src/helpers.php"
         ]
-    },
-    "require-dev": {
-        "mockery/mockery": "^1.0@dev"
     },
     "scripts": {
         "post-root-package-install": [
