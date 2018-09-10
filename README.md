@@ -40,6 +40,19 @@ DB_STRICT=false
 DB_PATH=database
 ```
 
+### Update composer.json
+
+To using seeder functionality, you need to setup composer classmap in composer.json file. Autoload classmap refer to folder that seeder file is placed. You can follow this example:
+````
+"autoload":{
+     "classmap":[
+        "database/seeds"
+     ]
+}
+````
+
+After that, run composer dump-autoload
+
 ### Credits
 
 All the credits for the laravel-outside goes to the Laravel Framework developers. We are only putting the pieces together here
