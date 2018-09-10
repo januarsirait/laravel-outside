@@ -122,5 +122,5 @@ return [
 
     ],
 
-    'path' => realpath(__DIR__ . '/../') . DIRECTORY_SEPARATOR . 'database'
+    'path' => env('DB_PATH', 'database')
 ];

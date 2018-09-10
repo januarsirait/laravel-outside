@@ -42,11 +42,17 @@ class Kernel
     protected $basePath;
 
     /**
+     * @var
+    */
+    protected $appPath;
+
+    /**
      * @param string $basePath
     */
     public function __construct($basePath)
     {
         $this->basePath = $basePath;
+        $this->appPath = __DIR__;
     }
 
     /**
@@ -104,7 +110,7 @@ class Kernel
     protected function initApp(){
         if (interface_exists('Illuminate\Contracts\Foundation\Application')) {
             $this->app = new Application($this->basePath);
-//            $this->app['config'] = $this->config;
+            $this->app['path'] = $this->appPath;
             $this->app['path.database'] = $this->config['database']['path'];
         }else{
             die("This package need laravel package. Please install through composer." . PHP_EOL.

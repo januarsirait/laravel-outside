@@ -4,6 +4,7 @@
 $autoload_paths = array(
     __DIR__.'/../vendor/autoload.php',
     __DIR__.'/../../vendor/autoload.php',
+    __DIR__.'/../../../../vendor/autoload.php',
 );
 
 $found = false;

@@ -434,11 +434,11 @@ class Application extends Container implements LaravelApplication
             return $this->namespace;
         }
 
-        $composer = json_decode(file_get_contents($this->basePath('composer.json')), true);
+        $composer = json_decode(file_get_contents(app_path('/../composer.json')), true);
 
         foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
-                if (realpath($this->basePath('src')) == realpath($this->basePath().'/'.$pathChoice)) {
+                if (realpath(app_path()) == realpath($this->basePath().'/'.$pathChoice)) {
                     return $this->namespace = $namespace;
                 }
             }
