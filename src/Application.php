@@ -438,7 +438,7 @@ class Application extends Container implements LaravelApplication
 
         foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
-                if (realpath(app_path()) == realpath($this->basePath().'/'.$pathChoice)) {
+                if (realpath(app_path()) == realpath(__DIR__.'/../'.DIRECTORY_SEPARATOR.$pathChoice)) {
                     return $this->namespace = $namespace;
                 }
             }
