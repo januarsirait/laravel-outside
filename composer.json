@@ -1,7 +1,16 @@
 {
     "name": "januar/laravel-outside",
-    "description": "Using laravel command (migration command available now) outside laravel framework",
+    "description": "Using laravel command (migration and seeder command available now) outside laravel framework",
+    "keywords": ["framework", "laravel", "migration"],
     "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Januar Sirait",
+            "email": "januar.srt@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/januar/laravel-outside",
     "require": {
         "illuminate/database": "5.6.*",
         "illuminate/console": "5.6.*",
@@ -11,13 +20,6 @@
         "illuminate/config": "5.6.*",
         "symfony/dotenv": "^4.2@dev"
     },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Januar Sirait",
-            "email": "januar.srt@gmail.com"
-        }
-    ],
     "minimum-stability": "dev",
     "autoload": {
         "classmap": [
