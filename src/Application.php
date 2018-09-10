@@ -64,6 +64,13 @@ class Application extends Container implements LaravelApplication
     protected $deferredServices = [];
 
     /**
+     * The application namespace.
+     *
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * @var array $config
     */
     public function __construct($basePath)
@@ -71,6 +78,8 @@ class Application extends Container implements LaravelApplication
         if ($basePath){
             $this->setBasePath($basePath);
         }
+
+        static::setInstance($this);
     }
 
     /**
@@ -85,12 +94,13 @@ class Application extends Container implements LaravelApplication
 
     /**
      * Get the base path of the Laravel installation.
+     * @param string $path
      *
      * @return string
      */
-    public function basePath()
+    public function basePath($path = "")
     {
-        return $this->basePath;
+        return $this->basePath . ($path != "" ? DIRECTORY_SEPARATOR . $path : "");
     }
 
     /**
@@ -409,5 +419,31 @@ class Application extends Container implements LaravelApplication
 
     public function config(){
         return $this['config'];
+    }
+
+    /**
+     * Get the application namespace.
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function getNamespace()
+    {
+        if (! is_null($this->namespace)) {
+            return $this->namespace;
+        }
+
+        $composer = json_decode(file_get_contents($this->basePath('composer.json')), true);
+
+        foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
+            foreach ((array) $path as $pathChoice) {
+                if (realpath($this->basePath('src')) == realpath($this->basePath().'/'.$pathChoice)) {
+                    return $this->namespace = $namespace;
+                }
+            }
+        }
+
+        throw new \RuntimeException('Unable to detect application namespace.');
     }
 }

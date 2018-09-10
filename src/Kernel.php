@@ -104,13 +104,14 @@ class Kernel
     protected function initApp(){
         if (interface_exists('Illuminate\Contracts\Foundation\Application')) {
             $this->app = new Application($this->basePath);
-            $this->app['config'] = $this->config;
+//            $this->app['config'] = $this->config;
             $this->app['path.database'] = $this->config['database']['path'];
         }else{
             die("This package need laravel package. Please install through composer." . PHP_EOL.
                 'See http://getcomposer.org/download/'.PHP_EOL);
         }
 
+        $this->app->instance('config', $config = new Repository($this->config));
         $this->app->singleton('events', function () {
             return new Dispatcher();
         });

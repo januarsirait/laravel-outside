@@ -20,6 +20,9 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
+        "classmap": [
+            "database/seeds"
+        ],
         "psr-4": {
             "Januar\\LaravelOutside\\": "src/"
         },
