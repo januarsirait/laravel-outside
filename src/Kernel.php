@@ -8,6 +8,7 @@
 
 namespace Januar\LaravelOutside;
 
+use Dotenv\Dotenv;
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
@@ -16,7 +17,6 @@ use Januar\LaravelOutside\Console\Application as Js;
 use Januar\LaravelOutside\Exception\AppException;
 use Januar\LaravelOutside\Exception\ConfigNotExistsException;
 use Januar\LaravelOutside\Provider\ConsoleServiceProvider;
-use Symfony\Component\Dotenv\Dotenv;
 
 
 class Kernel
@@ -94,7 +94,7 @@ class Kernel
 
     protected function loadConfig(){
         if (file_exists($this->basePath . '/.env')){
-            (new Dotenv())->load($this->basePath . '/.env');
+            (Dotenv::create($this->basePath))->load();
         }else{
             throw (new ConfigNotExistsException($this->basePath . '/.env'));
         }

@@ -7,6 +7,7 @@
  */
 namespace Januar\LaravelOutside;
 
+use Closure;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\Application as LaravelApplication;
 use Illuminate\Support\Arr;
@@ -19,7 +20,7 @@ class Application extends Container implements LaravelApplication
      *
      * @var string
      */
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
 
     /**
      * The base path for the Laravel installation.
@@ -117,9 +118,10 @@ class Application extends Container implements LaravelApplication
     }
 
     /**
+     * @param string $path
      * @return string
      */
-    public function databasePath()
+    public function databasePath($path = '')
     {
         return $this['path.database'];
     }
@@ -127,9 +129,10 @@ class Application extends Container implements LaravelApplication
     /**
      * Get or check the current application environment.
      *
+     * @param array $environments
      * @return string
      */
-    public function environment()
+    public function environment(...$environments)
     {
         // TODO: Implement environment() method.
     }
@@ -445,5 +448,202 @@ class Application extends Container implements LaravelApplication
         }
 
         throw new \RuntimeException('Unable to detect application namespace.');
+    }
+
+    /**
+     * Get the path to the bootstrap directory.
+     *
+     * @param string $path Optionally, a path to append to the bootstrap path
+     * @return string
+     */
+    public function bootstrapPath($path = '')
+    {
+        // TODO: Implement bootstrapPath() method.
+    }
+
+    /**
+     * Get the path to the application configuration files.
+     *
+     * @param string $path Optionally, a path to append to the config path
+     * @return string
+     */
+    public function configPath($path = '')
+    {
+        // TODO: Implement configPath() method.
+    }
+
+    /**
+     * Get the path to the environment file directory.
+     *
+     * @return string
+     */
+    public function environmentPath()
+    {
+        // TODO: Implement environmentPath() method.
+    }
+
+    /**
+     * Get the path to the resources directory.
+     *
+     * @param string $path
+     * @return string
+     */
+    public function resourcePath($path = '')
+    {
+        // TODO: Implement resourcePath() method.
+    }
+
+    /**
+     * Get the path to the storage directory.
+     *
+     * @return string
+     */
+    public function storagePath()
+    {
+        // TODO: Implement storagePath() method.
+    }
+
+    /**
+     * Run the given array of bootstrap classes.
+     *
+     * @param array $bootstrappers
+     * @return void
+     */
+    public function bootstrapWith(array $bootstrappers)
+    {
+        // TODO: Implement bootstrapWith() method.
+    }
+
+    /**
+     * Determine if the application configuration is cached.
+     *
+     * @return bool
+     */
+    public function configurationIsCached()
+    {
+        // TODO: Implement configurationIsCached() method.
+    }
+
+    /**
+     * Detect the application's current environment.
+     *
+     * @param \Closure $callback
+     * @return string
+     */
+    public function detectEnvironment(Closure $callback)
+    {
+        // TODO: Implement detectEnvironment() method.
+    }
+
+    /**
+     * Get the environment file the application is using.
+     *
+     * @return string
+     */
+    public function environmentFile()
+    {
+        // TODO: Implement environmentFile() method.
+    }
+
+    /**
+     * Get the fully qualified path to the environment file.
+     *
+     * @return string
+     */
+    public function environmentFilePath()
+    {
+        // TODO: Implement environmentFilePath() method.
+    }
+
+    /**
+     * Get the path to the configuration cache file.
+     *
+     * @return string
+     */
+    public function getCachedConfigPath()
+    {
+        // TODO: Implement getCachedConfigPath() method.
+    }
+
+    /**
+     * Get the path to the routes cache file.
+     *
+     * @return string
+     */
+    public function getCachedRoutesPath()
+    {
+        // TODO: Implement getCachedRoutesPath() method.
+    }
+
+    /**
+     * Get the current application locale.
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        // TODO: Implement getLocale() method.
+    }
+
+    /**
+     * Determine if the application has been bootstrapped before.
+     *
+     * @return bool
+     */
+    public function hasBeenBootstrapped()
+    {
+        // TODO: Implement hasBeenBootstrapped() method.
+    }
+
+    /**
+     * Set the environment file to be loaded during bootstrapping.
+     *
+     * @param string $file
+     * @return LaravelApplication
+     */
+    public function loadEnvironmentFrom($file)
+    {
+        // TODO: Implement loadEnvironmentFrom() method.
+    }
+
+    /**
+     * Determine if the application routes are cached.
+     *
+     * @return bool
+     */
+    public function routesAreCached()
+    {
+        // TODO: Implement routesAreCached() method.
+    }
+
+    /**
+     * Set the current application locale.
+     *
+     * @param string $locale
+     * @return void
+     */
+    public function setLocale($locale)
+    {
+        // TODO: Implement setLocale() method.
+    }
+
+    /**
+     * Determine if middleware has been disabled for the application.
+     *
+     * @return bool
+     */
+    public function shouldSkipMiddleware()
+    {
+        // TODO: Implement shouldSkipMiddleware() method.
+    }
+
+    /**
+     * Terminate the application.
+     *
+     * @return void
+     */
+    public function terminate()
+    {
+        // TODO: Implement terminate() method.
     }
 }
