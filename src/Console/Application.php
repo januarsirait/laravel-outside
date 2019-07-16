@@ -6,7 +6,7 @@
  * Time: 5:06 PM
  */
 
-namespace Januar\LaravelOutside\Console;
+namespace LaravelOutside\Console;
 
 
 use Illuminate\Console\Application as BaseApplication;
@@ -18,7 +18,7 @@ class Application extends BaseApplication
     /**
      * @var string
      */
-    const VERSION = '0.9.1';
+    const VERSION = '1.0.0';
 
     /**
      * @var string
@@ -31,7 +31,7 @@ class Application extends BaseApplication
     protected $config;
 
     /**
-     * @param \Januar\LaravelOutside\Application $app
+     * @param \LaravelOutside\Application $app
     */
     public function __construct($app)
     {
@@ -44,9 +44,9 @@ class Application extends BaseApplication
     }
 
     /**
-     * @param \Januar\LaravelOutside\Application $container
+     * @param \LaravelOutside\Application $container
      */
-    private function loadMigrations(\Januar\LaravelOutside\Application $container)
+    private function loadMigrations(\LaravelOutside\Application $container)
     {
         $files = glob($container->databasePath() . '/migrations/*.php');
         foreach ($files as $file) {
@@ -54,7 +54,7 @@ class Application extends BaseApplication
         }
     }
 
-    private function resolveDbPath(\Januar\LaravelOutside\Application $container){
+    private function resolveDbPath(\LaravelOutside\Application $container){
         if (!$container['files']->isDirectory($container->databasePath())){
             $container['files']->makeDirectory($container->databasePath());
         }

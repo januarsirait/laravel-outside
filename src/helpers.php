@@ -47,7 +47,7 @@ if (! function_exists('app')) {
      *
      * @param  string  $abstract
      * @param  array   $parameters
-     * @return mixed|\Januar\LaravelOutside\Application
+     * @return mixed|\LaravelOutside\Application
      */
     function app($abstract = null, array $parameters = [])
     {

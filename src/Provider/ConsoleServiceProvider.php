@@ -6,7 +6,7 @@
  * Time: 3:50 PM
  */
 
-namespace Januar\LaravelOutside\Provider;
+namespace LaravelOutside\Provider;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -18,9 +18,9 @@ use Illuminate\Database\Console\Migrations\InstallCommand as MigrateInstallComma
 use Illuminate\Database\Console\Migrations\RefreshCommand as MigrateRefreshCommand;
 use Illuminate\Database\Console\Migrations\RollbackCommand as MigrateRollbackCommand;
 use Illuminate\Database\Console\Migrations\MigrateMakeCommand;
-//use Illuminate\Foundation\Console\ModelMakeCommand;
 use Illuminate\Database\Console\Seeds\SeederMakeCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
+use LaravelOutside\Console\ModelMakeCommand;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -54,7 +54,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     protected $devCommands = [
         'MigrateMake' => 'command.migrate.make',
-//        'ModelMake' => 'command.model.make',
+        'ModelMake' => 'command.model.make',
         'SeederMake' => 'command.seeder.make',
     ];
 
@@ -193,12 +193,12 @@ class ConsoleServiceProvider extends ServiceProvider
      *
      * @return void
      */
-//    protected function registerModelMakeCommand()
-//    {
-//        $this->app->singleton('command.model.make', function ($app) {
-//            return new ModelMakeCommand($app['files']);
-//        });
-//    }
+    protected function registerModelMakeCommand()
+    {
+        $this->app->singleton('command.model.make', function ($app) {
+            return new ModelMakeCommand($app['files']);
+        });
+    }
 
     /**
      * Register the command.

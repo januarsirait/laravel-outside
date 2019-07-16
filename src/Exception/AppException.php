@@ -6,7 +6,7 @@
  * Time: 5:39 PM
  */
 
-namespace Januar\LaravelOutside\Exception;
+namespace LaravelOutside\Exception;
 
 
 class AppException extends \RuntimeException

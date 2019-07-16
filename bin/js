@@ -25,7 +25,7 @@ if (!$found) {
     );
 }
 
-$kernel = new \Januar\LaravelOutside\Kernel($basePath);
+$kernel = new \LaravelOutside\Kernel($basePath);
 $kernel->handle($input = new Symfony\Component\Console\Input\ArgvInput,
     new Symfony\Component\Console\Output\ConsoleOutput);
 

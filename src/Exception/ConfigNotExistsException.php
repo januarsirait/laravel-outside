@@ -6,7 +6,7 @@
  * Time: 5:35 PM
  */
 
-namespace Januar\LaravelOutside\Exception;
+namespace LaravelOutside\Exception;
 
 class ConfigNotExistsException extends AppException
 {

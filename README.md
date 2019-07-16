@@ -1,8 +1,8 @@
 # laravel-outside
-Package to use laravel command package from out of laravel framework. This package use fully illuminate/database package from laravel.
+Package to use laravel command from out of laravel framework. This package use fully illuminate/database package from laravel.
 
 ## Requirement
-- PHP >=5.4
+- PHP >= 7.1.3
 
 ## Installation
 ### Install Composer
@@ -39,6 +39,7 @@ DB_PREFIX=''
 DB_STRICT=false
 DB_PATH=database
 ```
+DB_PATH is configuration to set where your seeder and migration file will be place.
 
 ### Update composer.json
 
@@ -52,6 +53,38 @@ To using seeder functionality, you need to setup composer classmap in composer.j
 ````
 
 After that, run composer dump-autoload
+
+### Finally, Elequent and Make Model Command Can Used Now
+
+Laravel make:model command can used now. Available options is -m (migration) and -p (pivot). The documentation of this command, you can read from [Laravel Elequent documentation](https://laravel.com/docs/5.8/eloquent). 
+We sugest to used psr-4 autoload, so your model will placed in autoload path. Example :
+
+````
+"autoload":{
+    "psr-4": {
+        "Your\\Application\\Package\\": "src/"
+    },
+    "classmap":[
+        "database/seeds"
+    ]
+}
+````
+
+So, if you run create model command like this "php vendor/bin/js make:model Model/Example -m", 
+model will placed in your_application_path/src/Model and migration file will placed in your_application_path/[DB_PATH].
+
+##### Using Eloquent
+
+To use Eloquent in your application, just init laravel application with:
+````
+require 'vendor/autoload.php';
+
+$kernel = new \LaravelOutside\Kernel(realpath(__DIR__));
+$kernel->init();
+````
+
+You need pass base path as param to \LaravelOutside\Kernel. Base path is your
+root application path.
 
 ### Credits
 

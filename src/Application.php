@@ -5,7 +5,7 @@
  * Date: 8/27/18
  * Time: 11:18 AM
  */
-namespace Januar\LaravelOutside;
+namespace LaravelOutside;
 
 use Closure;
 use Illuminate\Container\Container;
@@ -65,6 +65,13 @@ class Application extends Container implements LaravelApplication
     protected $deferredServices = [];
 
     /**
+     * The custom application path defined by the developer.
+     *
+     * @var string
+     */
+    protected $appPath;
+
+    /**
      * The application namespace.
      *
      * @var string
@@ -91,6 +98,21 @@ class Application extends Container implements LaravelApplication
     public function version()
     {
         return static::VERSION;
+    }
+
+    /**
+     * Set the application directory.
+     *
+     * @param  string  $path
+     * @return \Illuminate\Foundation\Application
+     */
+    public function useAppPath($path)
+    {
+        $this->appPath = $path;
+
+        $this->instance('path', $path);
+
+        return $this;
     }
 
     /**
@@ -437,17 +459,31 @@ class Application extends Container implements LaravelApplication
             return $this->namespace;
         }
 
-        $composer = json_decode(file_get_contents(app_path('/../composer.json')), true);
+        $composer = json_decode(file_get_contents($this->basePath('composer.json')), true);
 
         foreach ((array) data_get($composer, 'autoload.psr-4') as $namespace => $path) {
             foreach ((array) $path as $pathChoice) {
-                if (realpath(app_path()) == realpath(__DIR__.'/../'.DIRECTORY_SEPARATOR.$pathChoice)) {
+                if (realpath($this->path($pathChoice)) === realpath($this->basePath($pathChoice))) {
+                    $this->useAppPath(realpath($this->path($pathChoice)));
                     return $this->namespace = $namespace;
                 }
             }
         }
 
         throw new \RuntimeException('Unable to detect application namespace.');
+    }
+
+    /**
+     * Get the path to the application "app" directory.
+     *
+     * @param  string  $path
+     * @return string
+     */
+    public function path($path = '')
+    {
+        $appPath = $this->appPath ?: $this->basePath.DIRECTORY_SEPARATOR;
+
+        return $appPath.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**

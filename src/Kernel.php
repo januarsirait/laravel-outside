@@ -6,23 +6,23 @@
  * Time: 5:26 PM
  */
 
-namespace Januar\LaravelOutside;
+namespace LaravelOutside;
 
 use Dotenv\Dotenv;
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
-use Januar\LaravelOutside\Console\Application as Js;
-use Januar\LaravelOutside\Exception\AppException;
-use Januar\LaravelOutside\Exception\ConfigNotExistsException;
-use Januar\LaravelOutside\Provider\ConsoleServiceProvider;
+use LaravelOutside\Console\Application as Js;
+use LaravelOutside\Exception\AppException;
+use LaravelOutside\Exception\ConfigNotExistsException;
+use LaravelOutside\Provider\ConsoleServiceProvider;
 
 
 class Kernel
 {
     /**
-     * @var \Januar\LaravelOutside\Console\Application
+     * @var \LaravelOutside\Console\Application
     */
     protected $js;
 
@@ -58,15 +58,23 @@ class Kernel
     /**
      * Run the console application.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
+     * @throws \Exception
      */
     public function handle($input, $output = null){
+        $this->init();
+        return $this->getJs()->run($input, $output);
+    }
+
+    /**
+     * Initialization application for global using
+    */
+    public function init(){
         try {
             $this->loadConfig();
             $this->bootstrap();
-            return $this->getJs()->run($input, $output);
         }catch (\Exception $e){
             if (is_subclass_of($e, AppException::class)){
                 $e->handle();
@@ -110,7 +118,6 @@ class Kernel
     protected function initApp(){
         if (interface_exists('Illuminate\Contracts\Foundation\Application')) {
             $this->app = new Application($this->basePath);
-            $this->app['path'] = $this->appPath;
             $this->app['path.database'] = $this->config['database']['path'];
         }else{
             die("This package need laravel package. Please install through composer." . PHP_EOL.
@@ -140,7 +147,6 @@ class Kernel
 
     public function bootstrap(){
         $this->initApp();
-        Facade::setFacadeApplication($this->app);
         $this->app->setDeferredServices([
                 'database' => '\Illuminate\Database\DatabaseServiceProvider',
                 'migration' => '\Illuminate\Database\MigrationServiceProvider'
@@ -150,5 +156,7 @@ class Kernel
         $this->app->boot();
         $this->app->loadDeferredProviders();
         $this->app->register(new ConsoleServiceProvider($this->app));
+
+        Facade::setFacadeApplication($this->app);
     }
 }
